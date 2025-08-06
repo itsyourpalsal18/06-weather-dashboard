@@ -6,9 +6,11 @@ searchBtn.addEventListener("click", function () {
     const city = cityInput.value.trim();
     if (city !== "") {
         getWeather(city);
+        saveSearch(city);
     }
 });
 
+renderSearchHistory();
 
 function getWeather(city) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
@@ -96,5 +98,30 @@ function displayForecast(data) {
         `;
 
         forecastCardsEl.appendChild(card);
+    });
+}
+
+function saveSearch(city) {
+    let history = JSON.parse(localStorage.getItem("weatherHistory")) || [];
+    if (!history.includes(city)) {
+        history.unshift(city); // add to front
+        history = history.slice(0, 8); // keep last 8 searches
+        localStorage.setItem("weatherHistory", JSON.stringify(history));
+        renderSearchHistory();
+    }
+}
+
+function renderSearchHistory() {
+    const historyEl = document.getElementById("history");
+    historyEl.innerHTML = "";
+
+    const history = JSON.parse(localStorage.getItem("weatherHistory")) || [];
+
+    history.forEach(city => {
+        const li = document.createElement("li");
+        li.classList.add("list-group-item", "list-group-item-action");
+        li.textContent = city;
+        li.addEventListener("click", () => getWeather(city));
+        historyEl.appendChild(li);
     });
 }

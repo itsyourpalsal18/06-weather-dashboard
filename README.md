@@ -3,7 +3,6 @@
 A responsive weather dashboard that allows users to search for a city and view both the current weather and a 5-day forecast. The application also stores search history using localStorage, making it easy to revisit previous searches.
 
 Live Demo: ---
-> Replace with your actual deployed link above.
 
 ---
 
